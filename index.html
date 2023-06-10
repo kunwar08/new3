@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blog Editor</title>
+  <style>
+    .editor {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    .editor textarea {
+      width: 500px;
+      height: 150px;
+      margin-bottom: 10px;
+    }
+
+    .editor input[type="text"] {
+      width: 500px;
+      margin-bottom: 10px;
+    }
+
+    .editor input[type="file"] {
+      margin-bottom: 10px;
+    }
+
+    .editor button {
+      padding: 10px;
+    }
+
+    .preview {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .preview img,
+    .preview video {
+      width: 300px;
+      height: 200px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="editor">
+    <input type="text" id="blogTitle" placeholder="Enter your blog title">
+    <textarea id="blogContent" placeholder="Enter your blog content"></textarea>
+    <input type="file" id="imageUpload" accept="image/*">
+    <input type="file" id="videoUpload" accept="video/*">
+    <button onclick="addImage()">Add Image</button>
+    <button onclick="addVideo()">Add Video</button>
+    <button onclick="publish()">Publish</button>
+  </div>
+
+  <div class="preview" id="preview">
+    <!-- Preview content will be displayed here -->
+  </div>
+
+  <script>
+    function addImage() {
+      const fileInput = document.getElementById('imageUpload');
+      const file = fileInput.files[0];
+
+      if (file) {
+        const preview = document.getElementById('preview');
+        const image = document.createElement('img');
+        image.src = URL.createObjectURL(file);
+        image.className = 'preview-element';
+        preview.appendChild(image);
+      }
+    }
+
+    function addVideo() {
+      const fileInput = document.getElementById('videoUpload');
+      const file = fileInput.files[0];
+
+      if (file) {
+        const preview = document.getElementById('preview');
+        const video = document.createElement('video');
+        video.src = URL.createObjectURL(file);
+        video.controls = true;
+        video.className = 'preview-element';
+        preview.appendChild(video);
+      }
+    }
+
+    function publish() {
+      const title = document.getElementById('blogTitle').value;
+      const content = document.getElementById('blogContent').value;
+      const preview = document.getElementById('preview');
+      preview.innerHTML = '';
+
+      const titleElement = document.createElement('h2');
+      titleElement.textContent = title;
+      preview.appendChild(titleElement);
+
+      const contentElement = document.createElement('p');
+      contentElement.textContent = content;
+      preview.appendChild(contentElement);
+
+      const previewElements = document.getElementsByClassName('preview-element');
+      for (let i = 0; i < previewElements.length; i++) {
+        URL.revokeObjectURL(previewElements[i].src);
+      }
+    }
+  </script>
+</body>
+</html>
